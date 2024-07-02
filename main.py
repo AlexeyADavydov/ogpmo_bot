@@ -13,7 +13,6 @@ load_dotenv()
 token = os.getenv('TOKEN')
 bot = telebot.TeleBot(token)
 
-input_channel = "@pax_americana"
 ogpmo_ran = "@ogpmo_ran"
 
 
@@ -40,9 +39,11 @@ def start(message):
             current_post_datetime = post_entity['datetime']
 
             post = (
-                f'{post_entity["title"]}\n\n'
-                f'{post_entity["text"]}\n\n'
-                f'{post_entity["datetime"]}\n\n'
+                f'<b>{post_entity["title"]}</b>'
+                f'\n\n'
+                f'{post_entity["text"]}'
+                f'\n\n'
+                f'Подробнее – {post_entity["link"]}'
             )
 
             if (previous_post_datetime != current_post_datetime) and (
@@ -51,19 +52,7 @@ def start(message):
 
                 institute['latest_post_datetime'] = current_post_datetime
 
-                # time.sleep(15)
-
-                bot.send_message(
-                    ogpmo_ran,
-                    f"{post}"
-                )
-                bot.send_message(
-                    message.from_user.id,
-                    f"Новый пост 1 {current_post_datetime, url}",
-                )
-                print(f"Новый пост 1 {current_post_datetime, url}")
-
-            elif (dt.fromisoformat(current_post_datetime) > 
+            elif (dt.fromisoformat(current_post_datetime) >
                   dt.fromisoformat(previous_post_datetime)):
 
                 institute['latest_post_datetime'] = current_post_datetime
@@ -72,24 +61,19 @@ def start(message):
 
                 bot.send_message(
                     ogpmo_ran,
-                    f"{post}"
+                    post,
+                    parse_mode='HTML'
                 )
                 bot.send_message(
                     message.from_user.id,
-                    f"Новый пост 2 {current_post_datetime, url}",
+                    f"Новый пост {current_post_datetime, url}",
                 )
-                print(f"Новый пост 2 {current_post_datetime, url}")
+                print(f"Новый пост {current_post_datetime, url}")
 
-            else:
-                bot.send_message(
-                    message.from_user.id,
-                    f"Старый пост {current_post_datetime, url}",
-                )
-                print(f"Старый пост {current_post_datetime, url}")
         bot.send_message(
-                message.from_user.id,
-                "Конец цикла парсинга. Следующий будет 10 минут",
-                )
+            message.from_user.id,
+            "Конец цикла парсинга. Следующий будет через 10 минут",
+            )
         time.sleep(600)
 
 
@@ -119,6 +103,11 @@ def channels(previous_post_datetime, url):
                     class_='tgme_widget_message_text'
                 ).text.strip()
 
+                link = latest_post.find(
+                    'a',
+                    class_='tgme_widget_message_date'
+                ).get('href')
+
                 datetime = latest_post.find(
                     'time',
                     class_='time',
@@ -128,6 +117,7 @@ def channels(previous_post_datetime, url):
                 post_entity = {
                     'title': title,
                     'text': text,
+                    'link': link,
                     'datetime': datetime,
                 }
 
