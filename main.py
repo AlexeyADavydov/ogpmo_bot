@@ -14,15 +14,9 @@ token = os.getenv('TOKEN')
 bot = telebot.TeleBot(token)
 
 ogpmo_ran = "@ogpmo_ran"
+test_channel = "@pax_americana"
 
-
-@bot.message_handler(commands=['start'])
-def start(message):
-
-    bot.reply_to(
-        message,
-        "Привет! Я буду репостить посты из одного канала в другой."
-    )
+def start():
 
     previous_post_datetime = None
 
@@ -64,17 +58,12 @@ def start(message):
                     post,
                     parse_mode='HTML'
                 )
-                bot.send_message(
-                    message.from_user.id,
-                    f"Новый пост {current_post_datetime, url}",
-                )
-                print(f"Новый пост {current_post_datetime, url}")
-
         bot.send_message(
-            message.from_user.id,
-            "Конец цикла парсинга. Следующий будет через 10 минут",
-            )
-        time.sleep(600)
+            test_channel,
+            f'Работает',
+            # parse_mode='HTML'
+        )
+        time.sleep(60)
 
 
 def channels(previous_post_datetime, url):
@@ -133,4 +122,5 @@ def channels(previous_post_datetime, url):
 
 
 if __name__ == "__main__":
+    start()
     bot.polling()
