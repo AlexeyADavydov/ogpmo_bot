@@ -58,11 +58,11 @@ def start():
                     post,
                     parse_mode='HTML'
                 )
-        bot.send_message(
-            test_channel,
-            f'Работает',
-            # parse_mode='HTML'
-        )
+        # bot.send_message(
+        #     test_channel,
+        #     f'Работает',
+        #     # parse_mode='HTML'
+        # )
         time.sleep(60)
 
 
