@@ -14,7 +14,7 @@ token = os.getenv('TOKEN')
 bot = telebot.TeleBot(token)
 
 ogpmo_ran = "@ogpmo_ran"
-test_channel = "@pax_americana"
+test_channel = "@workingstatus"
 
 def start():
 
@@ -58,11 +58,11 @@ def start():
                     post,
                     parse_mode='HTML'
                 )
-        # bot.send_message(
-        #     test_channel,
-        #     f'Работает',
-        #     # parse_mode='HTML'
-        # )
+            bot.send_message(
+                test_channel,
+                f'Сканирование прошло успешно',
+                # parse_mode='HTML'
+            )
         time.sleep(60)
 
 
