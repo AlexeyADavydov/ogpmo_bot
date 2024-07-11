@@ -16,9 +16,12 @@ bot = telebot.TeleBot(token)
 ogpmo_ran = "@ogpmo_ran"
 test_channel = "@workingstatus"
 
+
 def start():
 
     previous_post_datetime = None
+
+    cicle = 0
 
     while True:
 
@@ -58,11 +61,16 @@ def start():
                     post,
                     parse_mode='HTML'
                 )
+
+            acronym = institute['acronym_rus']
+
             bot.send_message(
                 test_channel,
-                f'Сканирование прошло успешно',
+                f'Цикл: {cicle}. {acronym} отсканирован.',
                 # parse_mode='HTML'
             )
+
+        cicle += 1
         time.sleep(60)
 
 
